@@ -1,5 +1,5 @@
 import { IComponentProps, IAffinityComponent } from './models';
-import { extensions } from './af-extensions';
+import { extensions, componentsRegistration } from './af-extensions';
 /*
  Affinity (Case Study)
  =====================
