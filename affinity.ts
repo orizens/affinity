@@ -1,5 +1,5 @@
 import { IComponentProps, IAffinityComponent } from './models';
-
+import { extensions } from './af-extensions';
 /*
  Affinity (Case Study)
  =====================
@@ -15,64 +15,98 @@ import { IComponentProps, IAffinityComponent } from './models';
  @Copyright orizens.com
  @License MIT
 */
-let affinity = {
-  component: {},
-  clean: {},
-  app: {}
+/*
+ Affinity
+ ========
+ affinity is an attempt to create a simple component based library/framework (a la angular, react, vue, preact etc..)
+ while using only es-latest and dom - no 3rd party
+ 
+ @Copyright orizens.com
+ @License MIT
+*/
+const affinity = {
+  component: null,
+  clean: null,
+  app: null,
+  store: null,
+  use: null
 };
 const cycles = ['afterAppend'];
-export const component: IAffinityComponent = ({
-  template = '',
-  childs = [],
-  tag = 'div',
-  attrs = {},
-  ...context
-}: IComponentProps) => {
-  // const target = document.createDocumentFragment();
-  let el = document.createElement(tag);
-  // append child nodes
-  if (childs.length) {
-    childs.forEach(child => el.append(child));
-  }
-  // append standard html attributes to the actual component's element
-  if (attrs) {
-    Object.keys(attrs).forEach(attr => el.setAttribute(attr, attrs[attr]));
-  }
-  // append template
-  if (template !== '') {
-    // replace events prefix @ with af-
-    el.innerHTML = template.replace(/(@click)/gim, 'data-af-click');
-    // parse event handlers for element only
-    const events = el.querySelectorAll('[data-af-click]');
-    events.forEach(node => {
-      const handlerName = node.getAttribute('data-af-click');
-      node.addEventListener('click', context[handlerName]);
-    });
-  }
-  // apply life cycle hooks
-  if (cycles.some(cy => context.hasOwnProperty(cy))) {
-    cycles.forEach(cy => {
-      if (context[cy]) {
-        context[cy](el);
+// The lib
+
+  export const component = comp => {
+    const render = (_comp, view) => {
+      const { childs = [], attrs = {}, ...context } = view;
+      const { tag = 'div' } = _comp;
+      let el = document.createElement(tag);
+      // append child nodes
+      // if (childs.length) {
+      //   childs.forEach(child => el.append(child));
+      // }
+      // append standard html attributes to the actual component's element
+      // if (attrs) {
+      //   Object.keys(attrs).forEach(attr => el.setAttribute(attr, attrs[attr]));
+      // }
+      // append template
+      extensions.forEach(ext => ext(view, el, comp));
+      // apply life cycle hooks
+      if (cycles.some(cy => comp.hasOwnProperty(cy))) {
+        cycles.forEach(cy => {
+          if (context[cy]) {
+            context[cy](el);
+          }
+        });
       }
-    });
-  }
-  return el;
-};
+      return el;
+    }
+    let product = props => {
+      return render(comp, comp.view(props));
+    };
+    product.def = comp;
+    return product;
+  };
 
-export const app = (target, node) => {
-  clean(target);
-  const $target = document.querySelector(target);
-  $target.append(node);
-  return $target;
-};
-
-const clean = target => {
-  const parent = document.querySelector(target);
-  if (parent.children.length) {
-    Array(parent.children.length)
-      .fill(0, 0)
-      .map(i => parent.children[i])
-      .forEach(child => child.remove());
+  export const app = (target, node) => {
+    clean(target);
+    const $target = document.querySelector(target);
+    $target.append(node);
+    return $target;
   }
-};
+
+  export const clean = (target) => {
+    const parent = document.querySelector(target);
+    if (parent.children.length) {
+      Array(parent.children.length)
+        .fill(0, 0)
+        .map(i => parent.children[i])
+        .forEach(child => child.remove());
+    }
+  }
+  export const store = (store = {}) => {
+    let render;
+    return {
+      ...store,
+      dispatch(key, value) {
+        store[key] = value;
+        render();
+      },
+      select(key) {
+        return store[key];
+      },
+      connect(_fn) {
+        render = _fn;
+        render();
+      }
+    }
+  }
+  export const use = (component) => {
+    if (!componentsRegistration.has(component)) {
+      componentsRegistration.register(component);
+    }
+  }
+  affinity.component = component;
+  affinity.clean = clean;
+  affinity.app = app;
+  affinity.store = store;
+  affinity.use = use;
+
