@@ -10,7 +10,7 @@ const afTemplateEngine = (props, el) => {
       });
     }
   };
-const componentsRegistration = {
+export const componentsRegistration = {
   ids: {},
   has(component) {
     return this.ids[component.def.tag] !== undefined;
