@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "es6",
+    "target": "es6",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "strictNullChecks": false,
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "./typings/"
+  },
+  "include": ["./src/"]
+}

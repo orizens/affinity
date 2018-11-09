@@ -1,0 +1,19 @@
+{
+  "name": "affinity",
+  "version": "0.0.1",
+  "description": "affinity is an attempt to create a simple component based library with few time savers (event binding, store etc..)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orizens/affinity.git"
+  },
+  "author": "Oren Farhi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/orizens/affinity/issues"
+  },
+  "homepage": "https://github.com/orizens/affinity#readme"
+}
