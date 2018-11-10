@@ -3,9 +3,10 @@
 affinity is an attempt to create a simple component based library with few time savers (event binding, store etc..)
 
 # What's included
-1. component 
+
+1. component
 2. store (mutiple)
-3. app (multiple) 
+3. app (multiple)
 4. simple event binding
 5. component template is string literal
 
@@ -32,7 +33,7 @@ export const AfCardComponent = component({
       handleOnClick(ev) {
         onGo(url);
       }
-    }
+    };
   }
 });
 ```
@@ -40,3 +41,9 @@ export const AfCardComponent = component({
 # Live Demo
 
 https://stackblitz.com/edit/typescript-ak7kpp
+
+# Run This Repo
+
+1. `npm i`
+2. `npm start`
+3. open [http://localhost:3000](http://localhost:3000)
