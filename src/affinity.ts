@@ -1,4 +1,4 @@
-// import { IComponentProps, IAffinityComponent } from './models';
+import { IComponentProps, IAffinityComponent } from './models';
 import { extensions, componentsRegistration } from './af-extensions';
 /*
  Affinity (Case Study)
@@ -39,9 +39,17 @@ export const component = comp => {
     const { childs = [], attrs = {}, ...context } = view;
     const { tag = 'div' } = _comp;
     let el = document.createElement(tag);
-    // apply extensions
+    // append child nodes
+    // if (childs.length) {
+    //   childs.forEach(child => el.append(child));
+    // }
+    // append standard html attributes to the actual component's element
+    // if (attrs) {
+    //   Object.keys(attrs).forEach(attr => el.setAttribute(attr, attrs[attr]));
+    // }
+    // append template
     extensions.forEach(ext => ext(view, el, comp));
-    // @todo apply life cycle hooks
+    // apply life cycle hooks
     if (cycles.some(cy => comp.hasOwnProperty(cy))) {
       cycles.forEach(cy => {
         if (context[cy]) {

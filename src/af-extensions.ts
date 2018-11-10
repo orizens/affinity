@@ -41,16 +41,15 @@ const afComponentRegistry = (view, el, comp) => {
     const nodes = el.querySelectorAll(selector);
     const _comp = componentsRegistration.getComponent(selector);
     nodes.forEach(node => {
-      const attrs = Array(node.attributes.length)
-        .fill(1, 0)
-        .reduce((acc, o, i) => {
-          const { name, value } = node.attributes[i];
-          const _value = view.hasOwnProperty(value) ? view[value] : value;
-          return {
-            ...acc,
-            [name]: _value
-          };
-        }, {});
+      const allAttrs: any = Array(node.attributes.length);
+      const attrs = allAttrs.fill(1, 0).reduce((acc, o, i) => {
+        const { name, value } = node.attributes[i];
+        const _value = view.hasOwnProperty(value) ? view[value] : value;
+        return {
+          ...acc,
+          [name]: _value
+        };
+      }, {});
       node.replaceWith(_comp(attrs));
     });
   });

@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "module": "es6",
-    "target": "es6",
+    "moduleResolution": "node",
     "noImplicitAny": false,
-    "removeComments": true,
+    "removeComments": false,
     "strictNullChecks": false,
     "outDir": "./dist/",
     "sourceMap": true,
-    "declaration": true,
-    "declarationDir": "./typings/"
+    "allowJs": true,
+    "target": "es2017",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"]
   },
   "include": ["./src/"]
 }
